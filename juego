@@ -2,17 +2,19 @@ package ProyectoFinal;
 
 class juego {
 
-	private int premios;
+	private int[] premios;
     private String comodines;
     private int numero;
     private int numero2;
+    private int numero3;
 
     // Constructor
-    public juego(String comodines, int premios, int numero, int numero2) {
+    public juego(String comodines, int[] premios, int numero, int numero2, int numero3) {
         this.comodines = comodines;
         this.premios = premios;
         this.numero = numero;
         this.numero2 = numero2;
+        this.numero3 = numero3;
     }
 
     // Métodos getter y setter para encapsulamiento
@@ -24,11 +26,11 @@ class juego {
         this.comodines = comodines;
     }
     
-    public int getPremios() {
+    public int[] getPremios() {
         return premios;
     }
 
-    public void setPremios(int premios) {
+    public void setPremios(int[] premios) {
         this.premios = premios;
     }
     
@@ -46,5 +48,13 @@ class juego {
 
     public void setNumero2(int numero2) {
         this.numero2 = numero2;
+    }
+    
+    public int getNumero3() {
+        return numero3;
+    }
+
+    public void setNumero3(int numero3) {
+        this.numero3 = numero3;
     }
 }
