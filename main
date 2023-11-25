@@ -3,20 +3,22 @@ package ProyectoFinal;
 import java.util.Random;
 
 public class main {
-	public static void main(String[] args) {
+    public static void main(String[] args) {
         // Crear un arreglo de instancias de la clase Operar
         Operar[] cuenta = new Operar[10];
         Operar[] dias = new Operar[5];
-        
+
         Premios max = new Premios();
 
-     // Inicializar las instancias y mostrar la información de cada concursante
+        int acumulador = 0;
+
+        // Inicializar las instancias y mostrar la información de cada concursante
         String[] nombresDias = {"Lunes", "Martes", "Miércoles", "Jueves", "Viernes"};
-        
+
         for (int j = 0; j < dias.length; j++) {
-        	
-        	int g = 0;
-        	
+            int g = 0;
+            int aleatorio = 0;
+
             // Inicializar un nuevo Operar y asignar el día de forma ordenada
             dias[j] = new Operar();
             dias[j].setDia(nombresDias[j]);
@@ -25,7 +27,7 @@ public class main {
             System.out.println();
             System.out.println("Día " + dias[j].getDia() + ":");
             System.out.println("--------------------------------------");
-       
+
             Operar ganadorDia = null;
             int tiempoMinimo = Integer.MAX_VALUE;
 
@@ -41,39 +43,76 @@ public class main {
                 System.out.println("Cédula: " + cuenta[i].getCedula());
                 System.out.println("Tiempo en contestar pregunta por llamada en minutos: " + cuenta[i].getTiempo());
                 System.out.println("--------------------------------------");
-    
+
                 // Verificar si este concursante tiene el tiempo más bajo
                 if (cuenta[i].getTiempo() < tiempoMinimo) {
                     tiempoMinimo = cuenta[i].getTiempo();
                     ganadorDia = cuenta[i];
                 }
             }
-            
+
             g = max.generarNumero2();
+            aleatorio = max.generarNumeroAleatorio();
 
             // Mostrar al ganador del día
             if (ganadorDia != null) {
-            	System.out.println();
+                System.out.println();
                 System.out.println("                                            !!!!!!!!!!Ganador del día!!!!!!!!!!");
                 System.out.println("Nombre: " + ganadorDia.getNombre());
                 System.out.println("Edad: " + ganadorDia.getEdad());
                 System.out.println("Cédula: " + ganadorDia.getCedula());
                 System.out.println("Tiempo en contestar pregunta por llamada en minutos: " + ganadorDia.getTiempo());
+                System.out.println("El concursante llegó hasta la pregunta número: " + aleatorio);
+                System.out.println("El número de comodines usados por el concursante es: " + g);
+
+                String[] comodinesUsados = new String[g];
+                for (int a = 0; a < g; a++) {
+                    String palabra = Premios.generarComodines();
+
+                    // Verificar si el comodín ya ha sido utilizado
+                    while (yaSeUso(comodinesUsados, palabra)) {
+                        palabra = Premios.generarComodines();
+                    }
+
+                    comodinesUsados[a] = palabra;
+                    System.out.println("Un comodín usado es: " + palabra);
+                }
+
+                // Determinar si el concursante se retiró o falló
+                if (Premios.generarNumero3() == 0) {
+                    System.out.println("El concursante falló su última pregunta.");
+                    if (aleatorio < 5) {
+                        System.out.println("Su premio es de: $0");
+                        ganadorDia.setPremioGanador(0);
+                    } else if (aleatorio < 10 && aleatorio >= 5) {
+                        System.out.println("Su premio es de: $" + max.generarPremioAleatorio()[5]);
+                        ganadorDia.setPremioGanador(max.generarPremioAleatorio()[5]);
+                    } else {
+                        System.out.println("Su premio es de: $" + max.generarPremioAleatorio()[10]);
+                        ganadorDia.setPremioGanador(max.generarPremioAleatorio()[10]);
+                    }
+                } else {
+                    System.out.println("El concursante se retiró.");
+                    int premioRetiro = max.generarPremioAleatorio()[aleatorio];
+                    System.out.println("El concursante se retira con un total de: $" + premioRetiro);
+                    ganadorDia.setPremioGanador(premioRetiro);
+                }
+
+                acumulador += ganadorDia.getPremioGanador();
+
+                System.out.println("--------------------------------------");
             }
-            System.out.println("El concursante llego hasta la prenunta numero: " + max.generarNumeroAleatorio());
-            System.out.println("El numero de comodines usados por el concursante es: " + g);
-            
-            for(int a = 0; a < g; a++) {
-            	String palabra;
-            	palabra = Premios.generarComodines();
-            	System.out.println("Un comodin usado es: " + palabra);
-            }
-            System.out.println("--------------------------------------");
-            
         }
-            
-        
-        
-        
+
+        System.out.println("Total acumulado de premios al final de la semana: $" + acumulador);
+    }  
+
+    static boolean yaSeUso(String[] comodinesUsados, String comodin) {
+        for (String usado : comodinesUsados) {
+            if (comodin.equals(usado)) {
+                return true;
+            }
+        }
+        return false;
     }
-} 
+}
