@@ -4,9 +4,12 @@ import java.util.Random;
 
 class Operar extends Concursante {
 
+	 private int premioGanador;
+	
     // Constructor
     public Operar() {
         super(generarNombreAleatorio(), generarEdad(), generarCedula(), generarTiempo(), generarDia());
+        this.premioGanador = 0;
     }
 
     // Método para generar un nombre aleatorio
@@ -39,5 +42,13 @@ class Operar extends Concursante {
     private static String generarDia() {
     	String[] dia  = {"Lunes", "Martes", "Miércoles", "Jueves", "Viernes"};
         return dia[new Random().nextInt(dia.length)];
+    }
+    
+    public int getPremioGanador() {
+        return premioGanador;
+    }
+
+    public void setPremioGanador(int premioGanador) {
+        this.premioGanador = premioGanador;
     }
 }
